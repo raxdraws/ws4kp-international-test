@@ -2,6 +2,7 @@
 // type 0 = observations, 1 = first forecast, 2 = second forecast
 
 import STATUS from './status.mjs';
+import advancedConfigs from './utils/advancedConfig.mjs';
 import { distance as calcDistance } from './utils/calc.mjs';
 import { json } from './utils/fetch.mjs';
 import { celsiusToFahrenheit } from './utils/units.mjs';

@@ -201,6 +201,26 @@ This will update the artifacts in the `/docs` folder. Simply commit them as part
 #### Docker Image
 This is handled automatically as part of CI/CD, when your code is merged to `main`.
 
+
+## Updates in 12.1.0
+
+- Introduces **Advanced Configurations**
+    - You can now customize arrays of cities to track across multiple displays.
+    - Customizable properties include:
+        - **Travel Cities**: Modify the list of cities shown on the "Travel Forecast" screen.
+        - **Regional Cities**: Modify the list of cities shown on the "Regional Forecast" screen.
+        - **Observation Stations**: Override the local list of stations.
+    - These values can be configured by passing JSON objects in the new Advanced Configurations menu.
+- **MeteoChile Hazards**
+    - Adds localized Hazard alert generation for locations in Chile via an experimental MeteoChile integration, accessible from the advanced menu.
+- **Google Gemini Local Forecast Generation**
+    - To provide detailed and localized textual forecast generation (similar to the NWS forecasts available in the USA), you can now configure Google Gemini.
+    - Simply check the "Use Google Gemini for Local Forecast Text" box and provide a valid Google Gemini API Key in the advanced settings menu.
+    - You can [get a Gemini API Key from Google AI Studio](https://aistudio.google.com/app/apikey).
+- **Customizable Scrolling Ticker**
+    - Adds a customizable ticker to the bottom scroll bar for personal announcements or mock ads.
+    - Fully supports widescreen mode and comes with a new "Ticker Speed" option in the settings.
+
 ## Updates in 12.0.0
 
 - Introduces personal weather station data
