@@ -18,7 +18,7 @@ const start = () => {
 
 	// set up the interval if needed
 	if (!interval) {
-		interval = setInterval(incrementInterval, 4000);
+		interval = setTimeout(incrementInterval, 4000);
 	}
 
 	// draw the data
@@ -35,6 +35,9 @@ const incrementInterval = () => {
 	const display = currentDisplay();
 	if (!display?.okToDrawCurrentConditions) {
 		stop(display?.elemId === 'progress');
+		// We still need to keep the loop going!
+		clearTimeout(interval);
+		interval = setTimeout(incrementInterval, 4000);
 		return;
 	}
 	screenIndex = (screenIndex + 1) % (screens.length);
@@ -55,7 +58,10 @@ const drawScreen = async () => {
 	if (conditionText === '') {
 		incrementInterval();
 	} else {
-		drawCondition(conditionText);
+		const isTicker = screenIndex === screens.length - 1;
+		const duration = drawCondition(conditionText, isTicker);
+		clearTimeout(interval);
+		interval = setTimeout(incrementInterval, duration);
 	}
 };
 
@@ -116,7 +122,8 @@ const screens = [
 ];
 
 // internal draw function with preset parameters
-const drawCondition = (text) => {
+const drawCondition = (text, isTicker) => {
+	let displayDuration = 4000;
 	elemForEach('.weather-display .scroll .fixed', (elem) => {
 		// Remove old text-layers with exit
 		const layers = elem.querySelectorAll('.text-layer');
@@ -143,7 +150,31 @@ const drawCondition = (text) => {
 
 		// Trigger wipe
 		newLayer.classList.add('active');
+
+		if (isTicker) {
+			const scrollWidth = content.offsetWidth;
+			const containerWidth = elem.offsetWidth;
+			if (scrollWidth > containerWidth) {
+				content.classList.add('sliding-ticker');
+				const scrollTime = (scrollWidth / 150) * 1000; // 150px per sec
+				displayDuration = Math.max(4000, scrollTime + 1000);
+				// Override standard 0.2s wipe
+				content.style.transition = 'none';
+				content.style.clipPath = 'inset(0 0% 0 0)';
+
+				// Use transition for sliding instead of keyframes to easily use dynamic values
+				content.style.transform = 'translateX(0)';
+				// Add a small delay so it's readable before it starts scrolling
+				setTimeout(() => {
+					content.style.transition = `transform ${scrollTime / 1000}s linear`;
+					content.style.transform = `translateX(-${scrollWidth - containerWidth + 20}px)`; // +20px padding
+				}, 1000);
+
+			}
+		}
 	});
+
+	return displayDuration;
 };
 document.addEventListener('DOMContentLoaded', () => {
 	start();
