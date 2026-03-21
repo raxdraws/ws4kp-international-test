@@ -2,6 +2,7 @@
 import { distance as calcDistance, directionToNSEW } from './utils/calc.mjs';
 import { json } from './utils/fetch.mjs';
 import STATUS from './status.mjs';
+import advancedConfigs from './utils/advancedConfig.mjs';
 import { locationCleanup } from './utils/string.mjs';
 import { celsiusToFahrenheit, kphToMph } from './utils/units.mjs';
 import WeatherDisplay from './weatherdisplay.mjs';
@@ -21,8 +22,18 @@ class LatestObservations extends WeatherDisplay {
 		const weatherParameters = _weatherParameters ?? this.weatherParameters;
 
 		// calculate distance to each station
-		const stationsByDistance = Object.keys(StationInfo).map((key) => {
-			const station = StationInfo[key];
+		let sStations = StationInfo;
+		const customS = advancedConfigs.get('observationsStations');
+		if (customS) {
+			try {
+				sStations = JSON.parse(customS);
+			} catch (e) {
+				console.error('Invalid custom observation stations JSON', e);
+			}
+		}
+
+		const stationsByDistance = Object.keys(sStations).map((key) => {
+			const station = sStations[key];
 			const distance = calcDistance(station.lat, station.lon, weatherParameters.latitude, weatherParameters.longitude);
 			return { ...station, distance };
 		});

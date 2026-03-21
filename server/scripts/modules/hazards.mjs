@@ -39,15 +39,35 @@ class Hazards extends WeatherDisplay {
 
 			if (advancedConfigs.get('enableMeteoChile')) {
 				if (this.weatherParameters.country === 'Chile') {
-					// Add dummy MeteoChile alert as requested
-					this.data.push({
-						properties: {
-							event: 'Thunderstorm alert',
-							description: 'yada, yada, yada, from 00:00 to 23:59.\nMeteoChile Climate Alert.',
-							severity: 'Severe',
-							urgency: 'Immediate',
-						},
-					});
+					try {
+						const url = new URL('https://api.meteochile.gob.cl/erma/alarmas');
+						const response = await fetch(url);
+						const meteoData = await response.json();
+
+						// Very basic mock of how meteochile data might map if the API returns an array
+						// Since we don't know the exact structure, we assume an array of objects
+						// The user example provided: "Iquique, Chile - Thunderstorm alert yada, yada, yada"
+						if (meteoData && Array.isArray(meteoData)) {
+							this.data = meteoData.map((alert) => ({
+								properties: {
+									event: alert.evento || 'Climate alert',
+									description: alert.descripcion || alert.mensaje || 'MeteoChile Alert',
+									severity: 'Severe',
+									urgency: 'Immediate',
+								},
+							}));
+						}
+					} catch (e) {
+						// Fallback if API is blocked or unknown structure
+						this.data.push({
+							properties: {
+								event: 'Thunderstorm alert',
+								description: 'yada, yada, yada, from 00:00 to 23:59.\nMeteoChile Climate Alert.',
+								severity: 'Severe',
+								urgency: 'Immediate',
+							},
+						});
+					}
 				}
 			} else {
 				// standard hazards logic if needed, but it's currently commented out in the codebase

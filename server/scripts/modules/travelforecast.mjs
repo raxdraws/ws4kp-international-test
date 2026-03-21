@@ -1,5 +1,6 @@
 // travel forecast display
 import STATUS from './status.mjs';
+import advancedConfigs from './utils/advancedConfig.mjs';
 import { json } from './utils/fetch.mjs';
 import { getWeatherRegionalIconFromIconLink } from './icons.mjs';
 import { DateTime } from '../vendor/auto/luxon.mjs';
