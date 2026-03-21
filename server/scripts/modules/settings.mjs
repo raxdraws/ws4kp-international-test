@@ -19,6 +19,7 @@ const settings = {
 	hideWebamp: { value: false },
 	kiosk: { value: false },
 	scanLines: { value: false },
+	tickerText: { value: '' },
 };
 
 const init = () => {
@@ -28,7 +29,7 @@ const init = () => {
 		[2, 'km/h'],
 		[3, 'knots'],
 		[4, 'mph'],
-		[5, 'bft']
+		[5, 'bft'],
 	]);
 	settings.marineWindUnits = new Setting('marineWindUnits', 'Wind Units (Marine)', 'select', 1, marineWindUnitsChange, true, [
 		[1, 'knots'],
@@ -60,6 +61,7 @@ const init = () => {
 		[2, '24-hour'],
 	]);
 
+	settings.tickerText = new Setting('tickerText', 'Ticker Text', 'text', '', null, true);
 	settings.speed = new Setting('speed', 'Speed', 'select', 1.0, null, true, [
 		[0.5, 'Very Fast'],
 		[0.75, 'Fast'],

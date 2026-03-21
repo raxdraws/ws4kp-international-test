@@ -2,6 +2,7 @@ import { elemForEach } from './utils/elem.mjs';
 import getCurrentWeather from './currentweather.mjs';
 import { currentDisplay } from './navigation.mjs';
 import { getConditionText } from './utils/weather.mjs';
+import settings from './settings.mjs';
 
 // constants
 const degree = String.fromCharCode(176);
@@ -48,7 +49,14 @@ const drawScreen = async () => {
 	// nothing to do if there's no data yet
 	if (!data) return;
 
-	drawCondition(screens[screenIndex](data));
+	const conditionText = screens[screenIndex](data);
+
+	// If the condition text is empty (e.g. empty ticker text), immediately skip to the next screen
+	if (conditionText === '') {
+		incrementInterval();
+	} else {
+		drawCondition(conditionText);
+	}
 };
 
 // the "screens" are stored in an array for easy addition and removal
@@ -102,6 +110,9 @@ const screens = [
 		const distance = `${data.Ceiling} ${data.CeilingUnit}`;
 		return `Visib: ${data.Visibility} ${data.VisibilityUnit}   Ceiling: ${data.Ceiling === 0 ? 'Unlimited' : distance}`;
 	},
+
+	// custom ticker text
+	() => settings.tickerText.value || '',
 ];
 
 // internal draw function with preset parameters
