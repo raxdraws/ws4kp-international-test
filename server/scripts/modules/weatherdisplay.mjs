@@ -259,7 +259,7 @@ class WeatherDisplay {
 	hideCanvas() {
 		this.resetNavBaseCount();
 		if (this.elem === null) return;
-		if (this.elemId !== 'hazards' && this.elem?.classList.length !== 0) this.elem.classList.remove('show');
+		if (this.elem?.classList.length !== 0) this.elem.classList.remove('show');
 		// used to change backgrounds for widescreen
 		document.querySelector('#divTwc').classList.remove(this.elemId);
 	}

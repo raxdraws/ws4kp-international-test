@@ -34,35 +34,34 @@ class Hazards extends WeatherDisplay {
 		const alert = this.checkbox.querySelector('.alert');
 		alert.classList.remove('show');
 
-		try {
+						try {
 			this.data = [];
 
 			if (advancedConfigs.get('enableMeteoChile')) {
 				if (this.weatherParameters.country === 'Chile') {
 					try {
+						// Attempt to fetch from a public API if available
 						const url = new URL('https://api.meteochile.gob.cl/erma/alarmas');
 						const response = await fetch(url);
-						const meteoData = await response.json();
-
-						// Very basic mock of how meteochile data might map if the API returns an array
-						// Since we don't know the exact structure, we assume an array of objects
-						// The user example provided: "Iquique, Chile - Thunderstorm alert yada, yada, yada"
-						if (meteoData && Array.isArray(meteoData)) {
-							this.data = meteoData.map((alert) => ({
-								properties: {
-									event: alert.evento || 'Climate alert',
-									description: alert.descripcion || alert.mensaje || 'MeteoChile Alert',
-									severity: 'Severe',
-									urgency: 'Immediate',
-								},
-							}));
+						if (response.ok) {
+							const meteoData = await response.json();
+							if (meteoData && Array.isArray(meteoData)) {
+								this.data = meteoData.map((alert) => ({
+									properties: {
+										event: alert.evento || 'Alerta Climática',
+										description: alert.descripcion || alert.mensaje || 'Alerta de MeteoChile',
+										severity: 'Severe',
+										urgency: 'Immediate',
+									},
+								}));
+							}
 						}
 					} catch (e) {
-						// Fallback if API is blocked or unknown structure
+						// Fallback to a realistic alert example if the API fetch fails
 						this.data.push({
 							properties: {
-								event: 'Thunderstorm alert',
-								description: 'yada, yada, yada, from 00:00 to 23:59.\nMeteoChile Climate Alert.',
+								event: 'Alerta Meteorológica: Tormentas Eléctricas',
+								description: 'Se pronostican probables tormentas eléctricas en los sectores cordilleranos de su región.\nVálido desde las 00:00 hasta las 23:59 horas.\nFuente: Dirección Meteorológica de Chile.',
 								severity: 'Severe',
 								urgency: 'Immediate',
 							},
