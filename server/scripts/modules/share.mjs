@@ -39,6 +39,14 @@ const createLink = async (e) => {
 		}
 	});
 
+	// get all text inputs
+	const textInputs = document.querySelectorAll('input[type=text]');
+	[...textInputs].forEach((elem) => {
+		if (elem?.id && elem.id !== 'txtAddress' && elem.id !== 'share-link-url') {
+			queryStringElements[elem.id] = elem?.value ?? '';
+		}
+	});
+
 	// add the location string
 	queryStringElements.latLonQuery = localStorage.getItem('latLonQuery');
 	queryStringElements.latLon = localStorage.getItem('latLon');

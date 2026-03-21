@@ -26,6 +26,10 @@ class Setting {
 			urlState = parseFloat(urlValue);
 			this.myValue = urlState;
 		}
+		if (type === 'text' && urlValue !== undefined) {
+			urlState = urlValue;
+			this.myValue = urlState;
+		}
 
 		// get existing value if present
 		const storedValue = urlState ?? this.getFromLocalStorage();
@@ -37,6 +41,9 @@ class Setting {
 		switch (type) {
 			case 'select':
 				this.selectChange({ target: { value: this.myValue } });
+				break;
+			case 'text':
+				this.textChange({ target: { value: this.myValue } });
 				break;
 			case 'checkbox':
 			default:
@@ -72,6 +79,32 @@ class Setting {
 
 		// set the initial value
 		this.selectHighlight(this.myValue);
+
+		return label;
+	}
+
+	generateText() {
+		const label = document.createElement('label');
+		label.htmlFor = `settings-${this.shortName}-text`;
+		label.id = `settings-${this.shortName}-label`;
+
+		const span = document.createElement('span');
+		span.innerHTML = `${this.name} `;
+		label.append(span);
+
+		const input = document.createElement('input');
+		input.type = 'text';
+		input.id = `settings-${this.shortName}-text`;
+		input.name = `settings-${this.shortName}-text`;
+		// Add placeholder if defaultValue was given, else empty string
+		input.placeholder = this.defaultValue || '';
+		input.value = this.myValue || '';
+
+		input.addEventListener('change', (e) => this.textChange(e));
+
+		label.append(input);
+
+		this.element = input;
 
 		return label;
 	}
@@ -116,6 +149,15 @@ class Setting {
 		this.changeAction(this.myValue);
 	}
 
+	textChange(e) {
+		// update the value
+		this.myValue = e.target.value;
+		this.storeToLocalStorage(this.myValue);
+
+		// call the change action
+		this.changeAction(this.myValue);
+	}
+
 	storeToLocalStorage(value) {
 		if (!this.sticky) return;
 		const allSettingsString = localStorage?.getItem(SETTINGS_KEY) ?? '{}';
@@ -135,6 +177,8 @@ class Setting {
 						case 'checkbox':
 							return storedValue;
 						case 'select':
+							return storedValue;
+						case 'text':
 							return storedValue;
 						default:
 							return null;
@@ -158,6 +202,9 @@ class Setting {
 			case 'select':
 				this.selectHighlight(newValue);
 				break;
+			case 'text':
+				this.element.value = newValue;
+				break;
 			case 'checkbox':
 			default:
 				this.element.checked = newValue;
@@ -179,6 +226,8 @@ class Setting {
 		switch (this.type) {
 			case 'select':
 				return this.generateSelect();
+			case 'text':
+				return this.generateText();
 			case 'checkbox':
 			default:
 				return this.generateCheckbox();
