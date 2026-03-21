@@ -224,6 +224,17 @@ This is handled automatically as part of CI/CD, when your code is merged to `mai
     - Adds a customizable ticker to the bottom scroll bar for personal announcements or mock ads.
     - Fully supports widescreen mode and comes with a new "Ticker Speed" option in the settings.
 
+
+## CHANGELOG, PATCHES AND BUGFIXES
+
+- **Scrolling Ticker**: Added a `tickerText` option that displays as a sliding marquee at the bottom with configurable speed, including resolving text cutoff issues.
+- **Advanced Configurations UI**: Created a new modal to let users override lists of Travel Cities, Regional Cities, and Observation Stations using JSON arrays.
+- **Google Gemini Integration**: Added support for Google Gemini to dynamically generate local forecast text based on Open-Meteo data, mimicking a '90s weather channel broadcast.
+- **MeteoChile Hazards**: Integrated a MeteoChile hazards fallback using real-world Spanish alert phrasing when the official API fails.
+- **Hazards Z-Index Bugfix**: Fixed a bug where the Hazards screen would permanently stick to the front and fail to hide during normal rotation.
+- **Accented Font Support**: Updated all TTF fonts to natively map unaccented equivalents for accented characters, eliminating blank spaces when rendering names like "Tarapacá" or "Ñuble".
+- **Custom Logo Upload**: Added `customLogoUrl` to advanced configurations, allowing a custom image URL to overwrite the default WeatherStar 4000+ logo and perfectly contain within the square bounding box.
+
 ## Updates in 12.0.0
 
 - Introduces personal weather station data
