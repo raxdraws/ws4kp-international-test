@@ -42,7 +42,18 @@ class TravelForecast extends WeatherDisplay {
 	async getData() {
 		// super checks for enabled
 		if (!super.getData()) return;
-		const forecastPromises = TravelCities.map(async (city) => {
+
+		let cities = TravelCities;
+		const customTC = advancedConfigs.get('travelCities');
+		if (customTC) {
+			try {
+				cities = JSON.parse(customTC);
+			} catch (e) {
+				console.error(e);
+			}
+		}
+
+		const forecastPromises = cities.map(async (city) => {
 			try {
 				// get point then forecast
 				if (!city.point) throw new Error('No pre-loaded point');
