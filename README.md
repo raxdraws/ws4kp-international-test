@@ -1,9 +1,6 @@
 [![build-docker](https://github.com/mwood77/ws4kp-international/actions/workflows/build-docker.yaml/badge.svg)](https://github.com/mwood77/ws4kp-international/actions/workflows/build-docker.yaml)
 [![pages-build-deployment](https://github.com/mwood77/ws4kp-international/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mwood77/ws4kp-international/actions/workflows/pages/pages-build-deployment)
 
-# CHANGELOG, PATCHES AND BUGFIXES
-* Insert changelogs and bugfixes here.
-
 # WeatherStar 4000+ (International)
 
 <div align="center"> 
