@@ -17,54 +17,71 @@ class LocalForecast extends WeatherDisplay {
 	async getData(_weatherParameters) {
 		if (!super.getData(_weatherParameters)) return;
 
-		// get today + 2 more days hourly forecasts
-		const days = Object.keys(_weatherParameters.forecast).slice(0, 3);
-		const daysWeatherData = Object.values(_weatherParameters.forecast).slice(0, 3);
+		try {
+			// get today + 2 more days hourly forecasts
+			const days = Object.keys(_weatherParameters.forecast).slice(0, 3);
+			const daysWeatherData = Object.values(_weatherParameters.forecast).slice(0, 3);
 
-		const localForecastTextByDay = [];
+			const localForecastTextByDay = [];
 
-		for (let index = 0; index < daysWeatherData.length; index++) {
-			const result = await generateLocalForecast(days[index], daysWeatherData[index].hours, _weatherParameters);
-			localForecastTextByDay.push(JSON.parse(result));
+			for (let index = 0; index < daysWeatherData.length; index++) {
+				const result = await generateLocalForecast(days[index], daysWeatherData[index].hours, _weatherParameters);
+				try {
+					localForecastTextByDay.push(JSON.parse(result));
+				} catch (e) {
+					console.error('Failed to parse local forecast result', e);
+					// push a fallback object so it doesn't crash the render
+					localForecastTextByDay.push({
+						date: days[index],
+						periods: {
+							morning: { period: 'MORNING', text: 'FORECAST UNAVAILABLE' },
+							night: { period: 'NIGHT', text: 'FORECAST UNAVAILABLE' },
+						},
+					});
+				}
+			}
+
+			const conditions = [];
+
+			localForecastTextByDay.forEach((forecast) => {
+				if (forecast.periods) {
+					const page = Object.values(forecast.periods).map((forecastText) => ({
+						DayName: forecast.date,
+						Text: forecastText.text || '',
+					}));
+					conditions.push(...page);
+				}
+			});
+
+			// read each text
+			this.screenTexts = conditions.map((condition) => {
+				// process the text
+				let text = `${condition.DayName.toUpperCase()} `;
+				const conditionText = condition.Text;
+				text += conditionText.toUpperCase().replace('...', ' ');
+				return text;
+			});
+
+			// fill the forecast texts
+			const templates = this.screenTexts.map((text) => this.fillTemplate('forecast', { text }));
+			const forecastsElem = this.elem.querySelector('.forecasts');
+			forecastsElem.innerHTML = '';
+			forecastsElem.append(...templates);
+
+			// increase each forecast height to a multiple of container height
+			this.pageHeight = forecastsElem.parentNode.scrollHeight;
+			templates.forEach((forecast) => {
+				const newHeight = Math.ceil(forecast.scrollHeight / this.pageHeight) * this.pageHeight;
+				forecast.style.height = `${newHeight}px`;
+			});
+
+			this.timing.totalScreens = forecastsElem.scrollHeight / this.pageHeight;
+			this.calcNavTiming();
+			this.setStatus(STATUS.loaded);
+		} catch (error) {
+			console.error('Error generating Local Forecast', error);
+			this.setStatus(STATUS.failed);
 		}
-
-		const conditions = [];
-
-		localForecastTextByDay.forEach((forecast) => {
-			const page = Object.values(forecast.periods).map((forecastText) => ({
-				DayName: forecast.date,
-				Text: forecastText.text,
-			}));
-
-			conditions.push(...page);
-		});
-
-		// read each text
-		this.screenTexts = conditions.map((condition) => {
-			// process the text
-			let text = `${condition.DayName.toUpperCase()} `;
-			const conditionText = condition.Text;
-			text += conditionText.toUpperCase().replace('...', ' ');
-
-			return text;
-		});
-
-		// fill the forecast texts
-		const templates = this.screenTexts.map((text) => this.fillTemplate('forecast', { text }));
-		const forecastsElem = this.elem.querySelector('.forecasts');
-		forecastsElem.innerHTML = '';
-		forecastsElem.append(...templates);
-
-		// increase each forecast height to a multiple of container height
-		this.pageHeight = forecastsElem.parentNode.scrollHeight;
-		templates.forEach((forecast) => {
-			const newHeight = Math.ceil(forecast.scrollHeight / this.pageHeight) * this.pageHeight;
-			forecast.style.height = `${newHeight}px`;
-		});
-
-		this.timing.totalScreens = forecastsElem.scrollHeight / this.pageHeight;
-		this.calcNavTiming();
-		this.setStatus(STATUS.loaded);
 	}
 
 	async drawCanvas() {
