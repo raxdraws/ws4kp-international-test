@@ -3,6 +3,7 @@ import getCurrentWeather from './currentweather.mjs';
 import { currentDisplay } from './navigation.mjs';
 import { getConditionText } from './utils/weather.mjs';
 import settings from './settings.mjs';
+import { t } from './utils/i18n.mjs';
 
 // constants
 const degree = String.fromCharCode(176);
@@ -69,7 +70,7 @@ const drawScreen = async () => {
 const screens = [
 	// station name
 	(data) => {
-		let sanitizedText = 'Conditions at ';
+		let sanitizedText = `${t('conditions_at')} `;
 		// Typically an airport with "International" at the second position
 		if (data.city.split(' ').length > 2 && data.city.split(' ')[1].toLowerCase() === 'international') {
 			sanitizedText += `${data.city.split(' ')[0]} Intl. ${data.city.split(' ')[2]} `;
@@ -85,28 +86,28 @@ const screens = [
 	},
 
 	// condition
-	(data) => `Condition: ${getConditionText(data.TextConditions)}`,
+	(data) => `${t('condition')}: ${getConditionText(data.TextConditions)}`,
 
 	// temperature
 	(data) => {
-		const text = `Temp: ${data.Temperature}${degree}${data.TemperatureUnit}`;
+		const text = `${t('temp')}: ${data.Temperature}${degree}${data.TemperatureUnit}`;
 		return text;
 	},
 
 	// humidity
-	(data) => `Humidity: ${data.Humidity}%   Dewpoint: ${data.DewPoint}${degree}${data.TemperatureUnit}`,
+	(data) => `${t('humidity')}: ${data.Humidity}%   ${t('dewpoint')}: ${data.DewPoint}${degree}${data.TemperatureUnit}`,
 
 	// barometric pressure
-	(data) => `Barometric Pressure: ${data.Pressure} ${data.PressureUnit}`,
+	(data) => `${t('barometric_pressure')}: ${data.Pressure} ${data.PressureUnit}`,
 
 	// wind
 	(data) => {
 		let text = data.WindSpeed > 0
-			? `Wind: ${data.WindDirection} ${data.WindSpeed} ${data.WindUnit}`
-			: 'Wind: Calm';
+			? `${t('wind')}: ${data.WindDirection} ${data.WindSpeed} ${data.WindUnit}`
+			: `${t('wind')}: ${t('wind_calm')}`;
 
 		if (data.WindGust > 0) {
-			text += `   Gusts to ${data.WindGust}`;
+			text += `   ${t('gusts_to')} ${data.WindGust}`;
 		}
 		return text;
 	},
@@ -114,7 +115,7 @@ const screens = [
 	// visibility
 	(data) => {
 		const distance = `${data.Ceiling} ${data.CeilingUnit}`;
-		return `Visib: ${data.Visibility} ${data.VisibilityUnit}   Ceiling: ${data.Ceiling === 0 ? 'Unlimited' : distance}`;
+		return `${t('visib')}: ${data.Visibility} ${data.VisibilityUnit}   ${t('ceiling')}: ${data.Ceiling === 0 ? t('unlimited') : distance}`;
 	},
 
 	// custom ticker text

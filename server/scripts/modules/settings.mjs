@@ -3,6 +3,7 @@ import btnNavigateRefreshClick from '../index.mjs';
 import { createAdvancedConfigUI } from './utils/advancedConfigUI.mjs';
 
 document.addEventListener('DOMContentLoaded', () => {
+	document.documentElement.setAttribute('data-loaded', 'true');
 	init();
 });
 
@@ -20,12 +21,23 @@ const settings = {
 	hideWebamp: { value: false },
 	kiosk: { value: false },
 	scanLines: { value: false },
+	language: { value: 'en' },
 	tickerText: { value: '' },
 	tickerSpeed: { value: 150 },
 };
 
 const init = () => {
 	// Customizable measurement units
+	settings.language = new Setting('language', 'Language', 'select', 'en', languageChange, true, [
+		['en', 'English'],
+		['es', 'Español'],
+		['fr', 'Français'],
+		['pt', 'Português'],
+		['it', 'Italiano'],
+		['zh', '中文'],
+		['ja', '日本語'],
+	]);
+
 	settings.windUnits = new Setting('windUnits', 'Wind Units', 'select', 2, windUnitsChange, true, [
 		[1, 'm/s'],
 		[2, 'km/h'],
@@ -95,6 +107,17 @@ const init = () => {
 	settingsSection.append(...settingHtml);
 
 	createAdvancedConfigUI();
+};
+
+const languageChange = (value) => {
+	if (value) {
+		document.documentElement.setAttribute('lang', value);
+		// Force reload to apply language changes
+		// But only if we aren't loading initially
+		if (document.documentElement.hasAttribute('data-loaded')) {
+			window.location.reload();
+		}
+	}
 };
 
 const temperatureChangeUnits = (value) => {
