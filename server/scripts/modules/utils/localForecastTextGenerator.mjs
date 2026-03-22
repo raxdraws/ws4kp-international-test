@@ -14,11 +14,19 @@ async function generateLocalForecast(dateStamp, hourlyData, _weatherParameters) 
 				body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
 			});
 
+			if (!response.ok) {
+				throw new Error(`Gemini API returned status ${response.status}`);
+			}
+
 			const data = await response.json();
 			if (data.candidates && data.candidates[0].content) {
-			    let text = data.candidates[0].content.parts[0].text;
-			    text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-			    return text;
+				let text = data.candidates[0].content.parts[0].text;
+				text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+				// Validate JSON before returning
+				JSON.parse(text);
+				return text;
+			} else {
+				throw new Error("No candidates returned from Gemini");
 			}
 		} catch (e) {
 			console.error("Gemini failed, falling back to local generation", e);
