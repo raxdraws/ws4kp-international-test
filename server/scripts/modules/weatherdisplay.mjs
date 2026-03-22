@@ -1,3 +1,4 @@
+import { t } from './utils/i18n.mjs';
 // base weather display class
 
 import STATUS, { calcStatusClass, statusClasses } from './status.mjs';
@@ -220,6 +221,22 @@ class WeatherDisplay {
 	drawCurrentDateTime() {
 		// Get the current date and time.
 		const now = DateTime.local().setZone(timeZone());
+
+		const titleElem = this.elem.querySelector('.header .title');
+		if (titleElem && !titleElem.dataset.translated) {
+			const transName = t(this.name.toLowerCase().replace(/ /g, '_'));
+			if (transName !== this.name.toLowerCase().replace(/ /g, '_')) {
+				const top = titleElem.querySelector('.top');
+				const bottom = titleElem.querySelector('.bottom');
+				if (top && bottom) {
+					top.innerHTML = transName.toUpperCase();
+					bottom.innerHTML = '';
+				} else if (titleElem.classList.contains('single')) {
+					titleElem.innerHTML = transName.toUpperCase();
+				}
+			}
+			titleElem.dataset.translated = 'true';
+		}
 
 		const time = now.toLocaleString({
 			hour: '2-digit',

@@ -17,3 +17,29 @@
 @import 'marine-forecast';
 @import 'aqi-forecast';
 @import 'custom-weather-station';
+// Language-specific font fallbacks
+html[lang="es"] {
+  font-family: "Star4000_es", "Star4000";
+}
+html[lang="fr"] {
+  font-family: "Star4000_fr", "Star4000";
+}
+html[lang="pt"] {
+  font-family: "Star4000_pt", "Star4000";
+}
+html[lang="it"] {
+  font-family: "Star4000_it", "Star4000";
+}
+html[lang="zh"] {
+  font-family: "Star4000_zh", "Star4000";
+}
+html[lang="ja"] {
+  font-family: "Star4000_ja", "Star4000";
+}
+
+@font-face { font-family: "Star4000_es"; src: url("../fonts/Star4000_es.woff") format("woff"); }
+@font-face { font-family: "Star4000_fr"; src: url("../fonts/Star4000_fr.woff") format("woff"); }
+@font-face { font-family: "Star4000_pt"; src: url("../fonts/Star4000_pt.woff") format("woff"); }
+@font-face { font-family: "Star4000_it"; src: url("../fonts/Star4000_it.woff") format("woff"); }
+@font-face { font-family: "Star4000_zh"; src: url("../fonts/Star4000_zh.woff") format("woff"); }
+@font-face { font-family: "Star4000_ja"; src: url("../fonts/Star4000_ja.woff") format("woff"); }
