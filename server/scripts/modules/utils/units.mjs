@@ -1,6 +1,6 @@
 // *********************************** unit conversions ***********************
 
-const round2 = (value, decimals) => Math.trunc(value * 10 ** decimals) / 10 ** decimals;
+const round2 = (value, decimals) => Math.round((value + Number.EPSILON) * 10 ** decimals) / 10 ** decimals;
 
 // Speed conversions
 const kphToKnots = (Kph) => Math.round((Kph * 0.539957) * 100) / 100; // 2 decimal places
