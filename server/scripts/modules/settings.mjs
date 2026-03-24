@@ -1,4 +1,5 @@
 import Setting from './utils/setting.mjs';
+// eslint-disable-next-line import/no-cycle
 import btnNavigateRefreshClick from '../index.mjs';
 import { createAdvancedConfigUI } from './utils/advancedConfigUI.mjs';
 

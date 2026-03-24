@@ -24,7 +24,7 @@ class LocalForecast extends WeatherDisplay {
 
 			const localForecastTextByDay = [];
 
-			for (let index = 0; index < daysWeatherData.length; index++) {
+			for (let index = 0; index < daysWeatherData.length; index += 1) {
 				const result = await generateLocalForecast(days[index], daysWeatherData[index].hours, _weatherParameters);
 				try {
 					localForecastTextByDay.push(JSON.parse(result));

@@ -31,8 +31,8 @@ class Hazards extends WeatherDisplay {
 		// super checks for enabled
 		const superResult = super.getData(weatherParameters);
 
-		const alert = this.checkbox.querySelector('.alert');
-		alert.classList.remove('show');
+		const alertIcon = this.checkbox.querySelector('.alert');
+		alertIcon.classList.remove('show');
 
 		try {
 			this.data = [];
@@ -72,7 +72,7 @@ class Hazards extends WeatherDisplay {
 				// standard hazards logic if needed, but it's currently commented out in the codebase
 			}
 
-			if (this.data.length > 0) alert.classList.add('show');
+			if (this.data.length > 0) alertIcon.classList.add('show');
 		} catch (error) {
 			console.error('Get hazards failed');
 			if (this.isEnabled) this.setStatus(STATUS.failed);
@@ -178,13 +178,6 @@ class Hazards extends WeatherDisplay {
 		return superValue;
 	}
 }
-
-const calcSeverity = (severity, event) => {
-	// base severity plus some modifiers for specific types of warnings
-	const baseSeverity = hazardLevels[severity] ?? 0;
-	const modifiedSeverity = hazardModifiers[event] ?? 0;
-	return baseSeverity + modifiedSeverity;
-};
 
 // register display
 registerDisplay(new Hazards(0, 'hazards', false));

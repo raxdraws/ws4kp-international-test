@@ -382,3 +382,11 @@ This web site should NOT be used in life threatening weather situations, or be r
 
 The WeatherSTAR 4000 unit and technology is owned by The Weather Channel. This web site is a free, non-profit work by fans. All of the back ground graphics of this web site were created from scratch.  The icons were created by Charles Abel and Nick Smith (http://twcclassics.com/downloads/icons.html) as well as by Malek Masoud.  The fonts were originally created by Nick Smith (http://twcclassics.com/downloads/fonts.html).
 
+
+## Use of Artificial Intelligence
+
+This project was extensively analyzed, debugged, and enhanced using **Jules AI**, an advanced AI software engineering agent. Jules AI was utilized to:
+- Dynamically build and integrate new application features, such as the customizable sliding ticker, Advanced Configurations UI, and multi-language localization.
+- Automate the parsing and restructuring of TrueType/WOFF binary fonts to procedurally generate composite accented characters for international support.
+- Autonomously search for, diagnose, and resolve critical repository bugs, including resolving Z-index issues with canvas rendering, fixing broken `setTimeout` asynchronous loops, and patching runtime UI `TypeError` crashes.
+- Draft pull requests, generate code documentation, and seamlessly refactor legacy ECMAScript code into modernized modules.

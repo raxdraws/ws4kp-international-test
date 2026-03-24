@@ -23,7 +23,15 @@ class Setting {
 			this.myValue = urlState;
 		}
 		if (type === 'select' && urlValue !== undefined) {
-			urlState = parseFloat(urlValue);
+			if (!isNaN(parseFloat(urlValue)) && !isNaN(urlValue - 0)) {
+				urlState = parseFloat(urlValue);
+			} else {
+				urlState = urlValue;
+			}
+			this.myValue = urlState;
+		}
+		if (type === 'text' && urlValue !== undefined) {
+			urlState = urlValue;
 			this.myValue = urlState;
 		}
 		if (type === 'text' && urlValue !== undefined) {
@@ -68,8 +76,11 @@ class Setting {
 
 		this.values.forEach(([value, text]) => {
 			const option = document.createElement('option');
-			option.value = value.toFixed(2);
-
+			if (typeof value === 'number') {
+				option.value = value.toFixed(2);
+			} else {
+				option.value = value;
+			}
 			option.innerHTML = text;
 			select.append(option);
 		});
@@ -142,7 +153,20 @@ class Setting {
 
 	selectChange(e) {
 		// update the value
-		this.myValue = parseFloat(e.target.value);
+		if (!isNaN(parseFloat(e.target.value)) && !isNaN(e.target.value - 0)) {
+			this.myValue = parseFloat(e.target.value);
+		} else {
+			this.myValue = e.target.value;
+		}
+		this.storeToLocalStorage(this.myValue);
+
+		// call the change action
+		this.changeAction(this.myValue);
+	}
+
+	textChange(e) {
+		// update the value
+		this.myValue = e.target.value;
 		this.storeToLocalStorage(this.myValue);
 
 		// call the change action
@@ -218,7 +242,11 @@ class Setting {
 	selectHighlight(newValue) {
 		// set the dropdown to the provided value
 		this.element.querySelectorAll('option').forEach((elem) => {
-			elem.selected = newValue.toFixed(2) === elem.value;
+			if (typeof newValue === 'number') {
+				elem.selected = newValue.toFixed(2) === elem.value;
+			} else {
+				elem.selected = newValue === elem.value;
+			}
 		});
 	}
 
