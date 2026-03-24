@@ -28,6 +28,8 @@ class AdvancedConfigs {
 		return {
 			useGemini: false,
 			geminiApiKey: '',
+			owmApiKey: '',
+			meteoredApiKey: '',
 			travelCities: '',
 			regionalCities: '',
 			observationsStations: '',

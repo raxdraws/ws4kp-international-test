@@ -109,7 +109,7 @@ const init = () => {
 	createAdvancedConfigUI();
 };
 
-const languageChange = (value) => {
+function languageChange(value) {
 	if (value) {
 		document.documentElement.setAttribute('lang', value);
 		// Force reload to apply language changes
@@ -118,59 +118,59 @@ const languageChange = (value) => {
 			window.location.reload();
 		}
 	}
-};
+}
 
-const temperatureChangeUnits = (value) => {
+function temperatureChangeUnits(value) {
 	if (value) {
 		document.documentElement.setAttribute('temperature-units', value);
 	}
-};
+}
 
-const distanceChangeUnits = (value) => {
+function distanceChangeUnits(value) {
 	if (value) {
 		document.documentElement.setAttribute('distance-units', value);
 	}
-};
+}
 
-const pressureChangeUnits = (value) => {
+function pressureChangeUnits(value) {
 	if (value) {
 		document.documentElement.setAttribute('pressure-units', value);
 	}
-};
+}
 
-const marineWaveHeightUnitsChange = (value) => {
+function marineWaveHeightUnitsChange(value) {
 	if (value) {
 		document.documentElement.setAttribute('marine-wave-height-units', value);
 	}
-};
+}
 
-const marineWindUnitsChange = (value) => {
+function marineWindUnitsChange(value) {
 	if (value) {
 		document.documentElement.setAttribute('marine-wind-units', value);
 	}
-};
+}
 
-const windUnitsChange = (value) => {
+function windUnitsChange(value) {
 	if (value) {
 		document.documentElement.setAttribute('wind-units', value);
 	}
-};
+}
 
-const hoursChangeFormat = (value) => {
+function hoursChangeFormat(value) {
 	if (value) {
 		document.documentElement.setAttribute('hours-format', value);
 	}
-};
+}
 
-const experimentalFeaturesChange = (value) => {
+function experimentalFeaturesChange(value) {
 	document.documentElement.setAttribute('experimental-features', value);
 
 	// @todo - this is a bit gnarly
 	if (!value) localStorage.removeItem('nearbyCitiesFromLocality');
 	btnNavigateRefreshClick();
-};
+}
 
-const hideWebampChange = async (value) => {
+async function hideWebampChange(value) {
 	if (value) {
 		document.documentElement.setAttribute('hide-webamp', value);
 	} else {
@@ -193,27 +193,27 @@ const hideWebampChange = async (value) => {
 		// eslint-disable-next-line no-undef
 		await webamp.reopen();
 	}
-};
+}
 
-const scanLinesChange = (value) => {
+function scanLinesChange(value) {
 	const container = document.querySelector('#divTwc');
 	if (value) {
 		container.classList.add('scan-lines');
 	} else {
 		container.classList.remove('scan-lines');
 	}
-};
+}
 
-const wideScreenChange = (value) => {
+function wideScreenChange(value) {
 	const container = document.querySelector('#divTwc');
 	if (value) {
 		container.classList.add('wide');
 	} else {
 		container.classList.remove('wide');
 	}
-};
+}
 
-const kioskChange = (value) => {
+function kioskChange(value) {
 	const body = document.querySelector('body');
 	if (value) {
 		body.classList.add('kiosk');
@@ -221,6 +221,6 @@ const kioskChange = (value) => {
 	} else {
 		body.classList.remove('kiosk');
 	}
-};
+}
 
 export default settings;

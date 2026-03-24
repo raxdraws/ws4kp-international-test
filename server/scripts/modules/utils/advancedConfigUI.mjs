@@ -27,6 +27,14 @@ export const createAdvancedConfigUI = () => {
                 Gemini API Key: <input type="password" id="ac-gemini-key" style="width:100%;" />
             </label><br/><br/>
 
+                        <label>
+                OpenWeatherMap API Key (for Comparator): <input type="text" id="ac-owm-key" style="width:100%;" />
+            </label><br/><br/>
+
+            <label>
+                Meteored API Key (for Comparator): <input type="text" id="ac-meteored-key" style="width:100%;" />
+            </label><br/><br/>
+
             <label>
                 <input type="checkbox" id="ac-enable-meteo" /> Enable MeteoChile Hazards
             </label><br/><br/>
@@ -65,6 +73,8 @@ export const createAdvancedConfigUI = () => {
         document.querySelector('#ac-custom-logo').value = advancedConfigs.get('customLogoUrl') || '';
         document.querySelector('#ac-use-gemini').checked = advancedConfigs.get('useGemini') || false;
         document.querySelector('#ac-gemini-key').value = advancedConfigs.get('geminiApiKey') || '';
+        document.querySelector('#ac-owm-key').value = advancedConfigs.get('owmApiKey') || '';
+        document.querySelector('#ac-meteored-key').value = advancedConfigs.get('meteoredApiKey') || '';
         document.querySelector('#ac-enable-meteo').checked = advancedConfigs.get('enableMeteoChile') || false;
         document.querySelector('#ac-travel-cities').value = advancedConfigs.get('travelCities') || '';
         document.querySelector('#ac-regional-cities').value = advancedConfigs.get('regionalCities') || '';
@@ -87,6 +97,8 @@ export const createAdvancedConfigUI = () => {
         advancedConfigs.set('customLogoUrl', document.querySelector('#ac-custom-logo').value);
         advancedConfigs.set('useGemini', document.querySelector('#ac-use-gemini').checked);
         advancedConfigs.set('geminiApiKey', document.querySelector('#ac-gemini-key').value);
+        advancedConfigs.set('owmApiKey', document.querySelector('#ac-owm-key').value);
+        advancedConfigs.set('meteoredApiKey', document.querySelector('#ac-meteored-key').value);
         advancedConfigs.set('enableMeteoChile', document.querySelector('#ac-enable-meteo').checked);
         advancedConfigs.set('travelCities', document.querySelector('#ac-travel-cities').value);
         advancedConfigs.set('regionalCities', document.querySelector('#ac-regional-cities').value);
