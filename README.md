@@ -11,6 +11,10 @@ This project is a fork of [`ws4kp`](https://github.com/netbymatt/ws4kp) by [@net
 
 A live version of this project is available at https://mwood77.github.io/ws4kp-international
 
+# [ NOTE ]
+
+This fork is a fork from the original fork, but made with AI to test the capabilities of Google Jules AI. If you don't want to contribute on the project because AI, okay, don't do it. If you hate this fork project, please go to see the original fork instead of this. Please do not harass or discriminate me just by using AI, i'm still learning how to use Python, NodeJS, HTML and more languages. For now i'm using AI to learn. Sorry if doesn't like it. 
+
 ## About
 
 This project aims to bring back the feel of the 90's with a weather forecast that has the look and feel of The Weather Channel at that time but available in a modern way. 
